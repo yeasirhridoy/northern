@@ -89,6 +89,7 @@
             &copy; {{ date('Y') }} Northern University. All rights reserved.
         </footer>
     </div>
+    <livewire:chat-widget />
     @fluxScripts
 </body>
 </html>

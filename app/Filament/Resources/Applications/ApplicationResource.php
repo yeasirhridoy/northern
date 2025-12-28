@@ -10,7 +10,6 @@ use App\Filament\Resources\Applications\Schemas\ApplicationForm;
 use App\Filament\Resources\Applications\Tables\ApplicationsTable;
 use App\Models\Application;
 use BackedEnum;
-use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -32,9 +31,9 @@ class ApplicationResource extends Resource
         return ApplicationsTable::configure($table);
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return ApplicationInfolist::configure($infolist);
+        return ApplicationInfolist::configure($schema);
     }
 
     public static function getRelations(): array

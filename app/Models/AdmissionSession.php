@@ -11,7 +11,6 @@ class AdmissionSession extends Model
 
     protected $fillable = [
         'name',
-        'is_active',
         'start_date',
         'end_date',
     ];
@@ -19,7 +18,6 @@ class AdmissionSession extends Model
     protected function casts(): array
     {
         return [
-            'is_active' => 'boolean',
             'start_date' => 'date',
             'end_date' => 'date',
         ];

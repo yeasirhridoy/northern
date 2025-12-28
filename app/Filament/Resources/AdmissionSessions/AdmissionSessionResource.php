@@ -27,8 +27,6 @@ class AdmissionSessionResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Toggle::make('is_active')
-                    ->required(),
                 Forms\Components\DatePicker::make('start_date')
                     ->required(),
                 Forms\Components\DatePicker::make('end_date')
@@ -42,8 +40,6 @@ class AdmissionSessionResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\IconColumn::make('is_active')
-                    ->boolean(),
                 Tables\Columns\TextColumn::make('start_date')
                     ->date()
                     ->sortable(),

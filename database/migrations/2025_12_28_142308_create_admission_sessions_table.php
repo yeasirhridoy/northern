@@ -13,7 +13,6 @@ return new class extends Migration
         Schema::create('admission_sessions', function (Illuminate\Database\Schema\Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->boolean('is_active')->default(false);
             $table->date('start_date');
             $table->date('end_date');
             $table->timestamps();

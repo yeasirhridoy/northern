@@ -17,10 +17,9 @@ class AdmissionSessionFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->year . '-' . ($this->faker->year + 1),
-            'is_active' => $this->faker->boolean,
-            'start_date' => $this->faker->date(),
-            'end_date' => $this->faker->date(),
+            'name' => $this->faker->year . ' Session',
+            'start_date' => now(),
+            'end_date' => now()->addMonths(2),
         ];
     }
 }

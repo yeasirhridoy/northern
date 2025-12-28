@@ -27,11 +27,10 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('password'),
         ]);
 
-        $session = \App\Models\AdmissionSession::create([
-            'name' => 'Fall 2025',
-            'is_active' => true,
+        AdmissionSession::factory()->create([
+            'name' => 'Spring 2026',
             'start_date' => now()->subDays(10),
-            'end_date' => now()->addDays(30),
+            'end_date' => now()->addDays(20),
         ]);
 
         $cse = \App\Models\Department::create(['name' => 'Computer Science', 'code' => 'CSE']);

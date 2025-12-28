@@ -10,8 +10,7 @@ new class extends Component {
 
     public function mount()
     {
-        $this->activeSession = AdmissionSession::where('is_active', true)
-            ->where('start_date', '<=', now())
+        $this->activeSession = AdmissionSession::where('start_date', '<=', now())
             ->where('end_date', '>=', now())
             ->first();
 

@@ -82,9 +82,6 @@ new class extends Component {
                 'ssc_reg' => 'required|string',
                 'ssc_year' => 'required|numeric',
                 'ssc_gpa' => 'required|numeric|between:1,5',
-            ]);
-        } elseif ($this->step === 3) {
-            $this->validate([
                 'hsc_board' => 'required|string',
                 'hsc_roll' => 'required|string',
                 'hsc_reg' => 'required|string',
@@ -92,7 +89,7 @@ new class extends Component {
                 'hsc_gpa' => 'required|numeric|between:1,5',
                 'hsc_group' => 'required|string',
             ]);
-        } elseif ($this->step === 4) {
+        } elseif ($this->step === 3) {
             if (empty($this->selectedSubjects)) {
                 throw \Illuminate\Validation\ValidationException::withMessages([
                     'selectedSubjects' => 'Please select at least one subject.',
@@ -171,13 +168,13 @@ new class extends Component {
 
         <!-- Stepper UI -->
         <div class="flex items-center justify-between mb-8 overflow-x-auto pb-4">
-            @foreach(['Personal', 'SSC', 'HSC', 'Subjects', 'Review'] as $i => $label)
+            @foreach(['Personal', 'Academic', 'Subjects', 'Review'] as $i => $label)
                 <div class="flex items-center {{ $step >= $i + 1 ? 'text-blue-600' : 'text-gray-400' }}">
                     <div class="w-8 h-8 rounded-full border-2 flex items-center justify-center font-bold mr-2 {{ $step >= $i + 1 ? 'border-blue-600 bg-blue-50' : 'border-gray-300' }}">
                         {{ $i + 1 }}
                     </div>
                     <span class="whitespace-nowrap">{{ __($label) }}</span>
-                    @if($i < 4)
+                    @if($i < 3)
                         <div class="w-8 h-px bg-gray-300 mx-4"></div>
                     @endif
                 </div>
@@ -198,8 +195,12 @@ new class extends Component {
                 </div>
             @elseif($step === 2)
                 <div class="space-y-6">
-                    <flux:heading size="lg">{{ __('SSC / Equivalent Information') }}</flux:heading>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <flux:heading size="lg">{{ __('Academic Information') }}</flux:heading>
+                    
+                    <div class="border-b pb-2 mb-4">
+                        <flux:heading size="md">{{ __('SSC / Equivalent Information') }}</flux:heading>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                         <flux:select label="{{ __('Board') }}" wire:model="ssc_board">
                             <option value="">Select Board</option>
                             @foreach($boards as $board) <option value="{{ $board }}">{{ $board }}</option> @endforeach
@@ -209,10 +210,10 @@ new class extends Component {
                         <flux:input label="{{ __('Passing Year') }}" wire:model="ssc_year" />
                         <flux:input label="{{ __('GPA') }}" wire:model="ssc_gpa" placeholder="5.00" />
                     </div>
-                </div>
-            @elseif($step === 3)
-                <div class="space-y-6">
-                    <flux:heading size="lg">{{ __('HSC / Equivalent Information') }}</flux:heading>
+
+                    <div class="border-b pb-2 mb-4">
+                        <flux:heading size="md">{{ __('HSC / Equivalent Information') }}</flux:heading>
+                    </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <flux:select label="{{ __('Board') }}" wire:model="hsc_board">
                             <option value="">Select Board</option>
@@ -228,7 +229,7 @@ new class extends Component {
                         </flux:select>
                     </div>
                 </div>
-            @elseif($step === 4)
+            @elseif($step === 3)
                 <div class="space-y-6">
                     <flux:heading size="lg">{{ __('Subject Preference') }}</flux:heading>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -239,7 +240,7 @@ new class extends Component {
                                     @if(!in_array($subject->id, $selectedSubjects))
                                         <div class="flex justify-between items-center p-2 bg-gray-50 dark:bg-gray-700/50 rounded">
                                             <span>{{ $subject->name }} ({{ $subject->department->code }})</span>
-                                            <flux:button size="xs" wire:click="addSubject({{ $subject->id }})">{{ __('Add') }}</flux:button>
+                                            <flux:button size="xs" dusk="add-subject-{{ $subject->id }}" wire:click="addSubject({{ $subject->id }})">{{ __('Add') }}</flux:button>
                                         </div>
                                     @endif
                                 @endforeach
@@ -262,7 +263,7 @@ new class extends Component {
                         </div>
                     </div>
                 </div>
-            @elseif($step === 5)
+            @elseif($step === 4)
                 <div class="space-y-6">
                     <flux:heading size="lg">{{ __('Review Your Application') }}</flux:heading>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
@@ -302,7 +303,7 @@ new class extends Component {
                     <div></div>
                 @endif
 
-                @if($step < 5)
+                @if($step < 4)
                     <flux:button wire:click="nextStep" variant="primary">{{ __('Next') }}</flux:button>
                 @else
                     <flux:button wire:click="submit" variant="primary" color="green">{{ __('Submit Application') }}</flux:button>

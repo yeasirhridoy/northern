@@ -5,6 +5,7 @@ use App\Models\Application;
 
 new class extends Component {
     public Application $application;
+    public ?int $waitlistPosition = null;
 
     public function mount(Application $application)
     {
@@ -14,6 +15,19 @@ new class extends Component {
         }
 
         $this->application = $application->load(['session', 'assignedSubject', 'preferences.subject']);
+        $this->calculateWaitlistPosition();
+    }
+
+    public function calculateWaitlistPosition()
+    {
+        if ($this->application->status === 'waitlisted') {
+            $this->waitlistPosition = \App\Models\Application::where('status', 'waitlisted')
+                ->where('admission_session_id', $this->application->admission_session_id)
+                ->where('merit_score', '>=', $this->application->merit_score)
+                ->count();
+        } else {
+            $this->waitlistPosition = null;
+        }
     }
 
     public function acceptAdmission()
@@ -22,6 +36,19 @@ new class extends Component {
             $this->application->update(['status' => 'admitted']);
             $this->application = $this->application->refresh();
         }
+    }
+
+    public function declineAdmission()
+    {
+        if ($this->application->status === 'offered') {
+            $this->application->update(['status' => 'rejected']);
+            $this->application = $this->application->refresh();
+        }
+    }
+
+    public function getWaitlistPositionProperty()
+    {
+        return $this->waitlistPosition;
     }
 }; ?>
 
@@ -100,11 +127,46 @@ new class extends Component {
                             <flux:text size="sm" color="green" font-weight="semibold">{{ __('Admission Offered In:') }}</flux:text>
                             <flux:heading size="sm">{{ $application->assignedSubject->name }}</flux:heading>
                             
-                            @if($application->status !== 'admitted')
-                                <flux:button color="green" class="mt-4 w-full" variant="primary" wire:click="acceptAdmission">
-                                    {{ __('Accept & Confirm Admission') }}
-                                </flux:button>
+                            @if($application->status === 'offered')
+                                <div class="flex gap-2 mt-4">
+                                    <flux:button color="green" class="w-full" variant="primary" wire:click="acceptAdmission">
+                                        {{ __('Accept') }}
+                                    </flux:button>
+                                    
+                                    <flux:button color="red" class="w-full" variant="ghost" wire:confirm="Are you sure you want to decline this offer?" wire:click="declineAdmission">
+                                        {{ __('Decline') }}
+                                    </flux:button>
+                                </div>
                             @endif
+                        </div>
+                    @endif
+
+                    @if($application->status === 'waitlisted')
+                        <div class="mt-6 p-4 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg border border-yellow-200 dark:border-yellow-800">
+                            <flux:text size="sm" color="yellow" font-weight="semibold">{{ __('Waiting List Status') }}</flux:text>
+                            <p class="text-yellow-800 dark:text-yellow-400 mt-1">
+                                {{ __('Your position on the waiting list:') }} <strong>{{ $waitlistPosition }}</strong>
+                            </p>
+                        </div>
+                    @endif
+
+                    @if($application->status === 'admitted')
+                        <div class="mt-6 p-4 bg-blue-100 dark:bg-blue-900/30 rounded-lg border border-blue-200 dark:border-blue-800">
+                            <flux:heading size="sm" class="mb-2 text-blue-800 dark:text-blue-400">{{ __('Payment Instructions') }}</flux:heading>
+                            <div class="text-sm text-blue-800 dark:text-blue-300 space-y-2">
+                                <p><strong>{{ __('Bank Details:') }}</strong> Northern University Bank, A/C: 1234567890</p>
+                                <p><strong>{{ __('Mobile Banking:') }}</strong> bKash/Nagad: 01700000000 (Merchant)</p>
+                                <p class="text-xs mt-2">{{ __('Please use your Application ID as reference.') }}</p>
+                            </div>
+                        </div>
+                    @endif
+
+                    @if($application->status === 'rejected')
+                        <div class="mt-6 p-4 bg-red-100 dark:bg-red-900/30 rounded-lg border border-red-200 dark:border-red-800">
+                            <flux:text size="sm" color="red" font-weight="semibold">{{ __('Application Rejected') }}</flux:text>
+                            <p class="text-red-800 dark:text-red-400 mt-1">
+                                {{ __('This application has been rejected or withdrawn.') }}
+                            </p>
                         </div>
                     @endif
                 </div>

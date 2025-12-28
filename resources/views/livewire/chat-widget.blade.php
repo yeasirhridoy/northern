@@ -176,10 +176,11 @@ new class extends Component {
             <div class="p-3 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
                 <form wire:submit="sendMessage" class="flex w-full gap-2">
                     <input
+                        id="chat-input"
                         wire:model="input"
                         type="text"
                         placeholder="Type a message..."
-                        class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black dark:bg-gray-800 dark:border-gray-700 dark:text-white sm:text-sm"
+                        class="flex-1 px-4 py-2 rounded-md border border-gray-300 shadow-sm focus:border-black focus:ring-0 focus:outline-none dark:bg-gray-800 dark:border-gray-700 dark:text-white sm:text-sm"
                         wire:loading.attr="disabled"
                         wire:target="sendMessage,getResponse"
                         autofocus
@@ -200,9 +201,44 @@ new class extends Component {
     <script>
         document.addEventListener('livewire:initialized', () => {
             const container = document.getElementById('chat-container');
+            const inputField = document.getElementById('chat-input');
+            
+            const scrollToBottom = () => {
+                if (container) {
+                    setTimeout(() => {
+                        container.scrollTop = container.scrollHeight;
+                    }, 50);
+                }
+            };
+
+            const focusInput = () => {
+                if (inputField && !inputField.disabled) {
+                    inputField.focus();
+                }
+            };
+
+            // Initial focus and scroll
+            scrollToBottom();
+            focusInput();
+
+            // Handle updates
+            Livewire.on('chat-updated', () => {
+                scrollToBottom();
+                setTimeout(focusInput, 100);
+            });
+
+            // Re-focus when loading finishes
             Livewire.hook('morph.updated', ({ el, component }) => {
                 if (container) {
-                    container.scrollTop = container.scrollHeight;
+                    const isAtBottom = container.scrollHeight - container.scrollTop <= container.clientHeight + 100;
+                    if (isAtBottom) {
+                       scrollToBottom();
+                    }
+                }
+                
+                // If the input was disabled and is now enabled, focus it
+                if (inputField && !inputField.disabled) {
+                    focusInput();
                 }
             });
         });

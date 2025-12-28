@@ -216,12 +216,10 @@ new class extends Component {
                         </div>
                     @endif
 
-                    @if($application->status === 'rejected')
-                        <div class="mt-6 p-4 bg-red-100 dark:bg-red-900/30 rounded-lg border border-red-200 dark:border-red-800">
-                            <flux:text size="sm" color="red" font-weight="semibold">{{ __('Application Rejected') }}</flux:text>
-                            <p class="text-red-800 dark:text-red-400 mt-1">
-                                {{ __('This application has been rejected or withdrawn.') }}
-                            </p>
+                    @if($application->admin_remarks)
+                        <div class="mt-6 p-4 bg-gray-50 dark:bg-gray-900/30 rounded-lg border border-gray-200 dark:border-gray-800">
+                            <flux:text size="sm" font-weight="semibold">{{ __('Remarks from Admission Office:') }}</flux:text>
+                            <p class="text-sm mt-1 italic text-gray-600 dark:text-gray-400">{{ $application->admin_remarks }}</p>
                         </div>
                     @endif
                 </div>

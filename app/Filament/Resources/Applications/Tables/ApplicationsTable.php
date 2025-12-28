@@ -86,10 +86,11 @@ class ApplicationsTable
                         $record->update([
                             'payment_status' => 'approved',
                             'registration_id' => $regId,
+                            'status' => 'admitted',
                         ]);
                         \Filament\Notifications\Notification::make()
-                            ->title('Payment Approved')
-                            ->body("Registration ID: $regId generated.")
+                            ->title('Payment Approved & Admission Confirmed')
+                            ->body("Registration ID: $regId generated. Application status updated to Admitted.")
                             ->success()
                             ->send();
                     }),
@@ -106,6 +107,28 @@ class ApplicationsTable
                         \Filament\Notifications\Notification::make()
                             ->title('Payment Denied')
                             ->danger()
+                            ->send();
+                    }),
+                Action::make('promoteFromWaitlist')
+                    ->label('Promote from Waitlist')
+                    ->icon('heroicon-o-arrow-up-circle')
+                    ->color('success')
+                    ->visible(fn (Application $record) => $record->status === 'waitlisted')
+                    ->form([
+                        Forms\Components\Select::make('subject_id')
+                            ->label('Assign Subject')
+                            ->options(fn (Application $record) => $record->preferences->pluck('subject.name', 'subject_id'))
+                            ->required(),
+                    ])
+                    ->action(function (Application $record, array $data): void {
+                        $record->update([
+                            'assigned_subject_id' => $data['subject_id'],
+                            'status' => 'offered',
+                        ]);
+                        \Filament\Notifications\Notification::make()
+                            ->title('Applicant Promoted')
+                            ->body("{$record->user->name} has been promoted to Offered status.")
+                            ->success()
                             ->send();
                     }),
             ]);

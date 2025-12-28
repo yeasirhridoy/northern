@@ -63,6 +63,13 @@ new class extends Component {
                                 </div>
                             @endif
 
+                            @if ($application->admin_remarks)
+                                <div class="bg-gray-50 dark:bg-gray-900/20 p-4 rounded-lg border border-dashed border-gray-300 dark:border-gray-700">
+                                    <flux:text font-weight="semibold" size="sm">{{ __('Remarks from Admission Office:') }}</flux:text>
+                                    <flux:text size="sm" class="mt-1 italic">{{ $application->admin_remarks }}</flux:text>
+                                </div>
+                            @endif
+
                             <flux:button href="{{ route('application.show', $application->id) }}" variant="primary" class="w-full">
                                 {{ __('View Application Details') }}
                             </flux:button>

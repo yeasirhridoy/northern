@@ -30,6 +30,9 @@ class ApplicationForm
                         Forms\Components\Select::make('assigned_subject_id')
                             ->relationship('assignedSubject', 'name')
                             ->placeholder('None'),
+                        Forms\Components\Textarea::make('admin_remarks')
+                            ->label('Admin Remarks / Feedback')
+                            ->columnSpanFull(),
                     ])->columns(3),
 
                 Schemas\Components\Section::make('Payment Information')

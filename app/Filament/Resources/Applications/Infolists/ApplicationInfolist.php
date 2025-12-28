@@ -37,7 +37,11 @@ class ApplicationInfolist
                                         ->label('Assigned Subject')
                                         ->placeholder('Not Assigned Yet')
                                         ->weight(FontWeight::Bold),
-                                ])->columns(2),
+                                    InfolistComponents\TextEntry::make('admin_remarks')
+                                        ->label('Admin Remarks')
+                                        ->placeholder('No remarks')
+                                        ->columnSpanFull(),
+                                ])->columns(1),
                         ])->columnSpan(1),
 
                         SchemaComponents\Group::make([

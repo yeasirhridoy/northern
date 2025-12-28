@@ -14,6 +14,7 @@ class Application extends Model
         'admission_session_id',
         'status',
         'merit_score',
+        'admin_remarks',
         'assigned_subject_id',
         'father_name',
         'mother_name',

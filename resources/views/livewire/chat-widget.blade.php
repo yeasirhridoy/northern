@@ -13,8 +13,7 @@ new class extends Component {
 
     public function mount()
     {
-        // Initialize with empty messages or load from session if we want persistence across pages
-        // For now, ephemeral like the React widget
+        // Ephemeral chat session
     }
 
     public function toggleChat()
@@ -41,15 +40,14 @@ new class extends Component {
         ];
 
         $this->input = '';
-        $this->currentResponse = ''; // Reset current response buffer
-
-        // Stream response
-        $this->streamResponse();
+        
+        // Dispatch event to trigger AI response in a separate request
+        $this->dispatch('generate-response');
     }
 
-    public function streamResponse()
+    #[On('generate-response')]
+    public function getResponse()
     {
-        // Format messages for OpenAI
         $apiMessages = collect($this->messages)->map(function ($msg) {
             return [
                 'role' => $msg['role'],
@@ -61,36 +59,37 @@ new class extends Component {
 
         try {
             if ($assistantId) {
-                $stream = OpenAI::threads()->createAndRunStreamed([
+                // Assistants API doesn't have a simple non-streaming "create response" in one go 
+                // like Chat completions without managing runs, but we can just use the final output.
+                $response = OpenAI::threads()->createAndRun([
                     'assistant_id' => $assistantId,
-                    'temperature' => 0,
                     'thread' => [
                         'messages' => $apiMessages,
                     ],
                 ]);
 
-                foreach ($stream as $response) {
-                    if ($response->event === 'thread.message.delta') {
-                        $chunk = $response->response->delta->content[0]->text->value ?? '';
-                        if (!empty($chunk)) {
-                            $this->currentResponse .= $chunk;
-                            $this->stream('response-stream', $chunk, true);
-                        }
+                // Poll for completion (simplified)
+                $runId = $response->id;
+                $threadId = $response->threadId;
+
+                while (true) {
+                    $run = OpenAI::threads()->runs()->retrieve($threadId, $runId);
+                    if ($run->status === 'completed') {
+                        $messages = OpenAI::threads()->messages()->list($threadId);
+                        $this->currentResponse = $messages->data[0]->content[0]->text->value;
+                        break;
                     }
+                    if (in_array($run->status, ['failed', 'cancelled', 'expired'])) {
+                        throw new \Exception("Assistant run failed with status: {$run->status}");
+                    }
+                    sleep(1);
                 }
             } else {
-                 $stream = OpenAI::chat()->createStreamed([
-                     'model' => 'gpt-4o',
-                     'messages' => $apiMessages,
-                 ]);
-
-                foreach ($stream as $response) {
-                    $chunk = $response->choices[0]->delta->content ?? '';
-                    if (!empty($chunk)) {
-                        $this->currentResponse .= $chunk;
-                        $this->stream('response-stream', $chunk, true);
-                    }
-                }
+                $response = OpenAI::chat()->create([
+                    'model' => 'gpt-4o',
+                    'messages' => $apiMessages,
+                ]);
+                $this->currentResponse = $response->choices[0]->message->content;
             }
         } catch (\Exception $e) {
             $this->messages[] = [
@@ -106,7 +105,7 @@ new class extends Component {
             'content' => $this->currentResponse,
         ];
         
-        $this->currentResponse = ''; // Clear buffer after saving
+        $this->currentResponse = ''; 
     }
 }; ?>
 
@@ -146,7 +145,7 @@ new class extends Component {
             <!-- Content -->
             <div class="flex-1 overflow-hidden p-0 flex flex-col relative">
                 <div class="flex-1 overflow-y-auto p-4 space-y-4" id="chat-container">
-                    @if(empty($messages) && empty($currentResponse))
+                    @if(empty($messages))
                         <div class="flex flex-col items-center justify-center h-full text-center text-gray-400 p-4">
                             <x-heroicon-o-chat-bubble-left-right class="h-12 w-12 mb-4 opacity-20" />
                             <p>How can I help you today?</p>
@@ -160,15 +159,14 @@ new class extends Component {
                             </div>
                         </div>
                     @endforeach
-
-                    <!-- Streaming Response -->
-                    @if(!empty($currentResponse) || $currentResponse === '') 
-                        <!-- Always render this div so wire:stream can target it? No, wire:stream targets based on name. -->
-                    @endif
                     
-                    <div wire:stream="response-stream" class="flex justify-start hidden" x-data="{ show: false }" x-show="show" x-init="$watch('$el.innerHTML', () => { show = $el.innerHTML.length > 0 })" :class="{ 'hidden': !show, 'flex': show }">
+                    <div wire:loading wire:target="getResponse" class="flex justify-start">
                         <div class="max-w-[80%] rounded-lg p-3 bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-gray-100">
-                            <p class="whitespace-pre-wrap text-sm"></p>
+                            <div class="flex space-x-2">
+                                <div class="h-2 w-2 bg-gray-400 rounded-full animate-bounce"></div>
+                                <div class="h-2 w-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                                <div class="h-2 w-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.4s"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -182,13 +180,15 @@ new class extends Component {
                         type="text"
                         placeholder="Type a message..."
                         class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black dark:bg-gray-800 dark:border-gray-700 dark:text-white sm:text-sm"
-                        {{ !empty($currentResponse) ? 'disabled' : '' }}
+                        wire:loading.attr="disabled"
+                        wire:target="sendMessage,getResponse"
                         autofocus
                     />
                     <button 
                         type="submit" 
                         class="p-2 bg-black text-white rounded-md hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
-                        {{ !empty($currentResponse) ? 'disabled' : '' }}
+                        wire:loading.attr="disabled"
+                        wire:target="sendMessage,getResponse"
                     >
                         <x-heroicon-o-paper-airplane class="h-4 w-4" />
                     </button>
@@ -198,27 +198,13 @@ new class extends Component {
     @endif
     
     <script>
-        // Auto-scroll to bottom
         document.addEventListener('livewire:initialized', () => {
             const container = document.getElementById('chat-container');
-            
             Livewire.hook('morph.updated', ({ el, component }) => {
                 if (container) {
                     container.scrollTop = container.scrollHeight;
                 }
             });
-
-            // Also scroll when streaming
-            // We can observe changes to the container
-            const observer = new MutationObserver(() => {
-                if (container) {
-                     container.scrollTop = container.scrollHeight;
-                }
-            });
-            
-            if (container) {
-                observer.observe(container, { childList: true, subtree: true, characterData: true });
-            }
         });
     </script>
 </div>

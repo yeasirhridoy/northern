@@ -23,6 +23,7 @@ class ApplicationForm
                                 'offered' => 'Offered',
                                 'rejected' => 'Rejected',
                                 'admitted' => 'Admitted',
+                                'enrolled' => 'Enrolled',
                             ])
                             ->required(),
                         Forms\Components\TextInput::make('merit_score')

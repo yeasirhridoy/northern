@@ -198,6 +198,13 @@ new class extends Component {
                                     </div>
                                 @endif
 
+                                <div class="mb-6 p-4 bg-white dark:bg-gray-800 rounded-lg border border-blue-200 text-xs space-y-2">
+                                    <p class="font-bold text-blue-600 uppercase">{{ __('Payment Instructions') }}</p>
+                                    <p><strong>{{ __('Bank Deposit:') }}</strong> {{ __('Account Name: Northern University, Account No: 123456789, Bank: Example Bank.') }}</p>
+                                    <p><strong>{{ __('Mobile Banking:') }}</strong> {{ __('Send money to 01700000000 (bKash/Nagad Merchant). Use your Phone Number as reference.') }}</p>
+                                    <p class="italic text-gray-500">{{ __('After payment, please provide the details below for verification.') }}</p>
+                                </div>
+
                                 <form wire:submit="submitPayment" class="space-y-4">
                                     <flux:select wire:model="payment_method" label="Payment Method" placeholder="Select method">
                                         <option value="Bank">Bank Deposit</option>

@@ -160,7 +160,7 @@ new class extends Component {
     }
 }; ?>
 
-<div class="max-w-4xl mx-auto p-6">
+<div class="p-6">
     <div class="mb-8">
         <flux:heading size="xl">{{ __('Admission Application') }}</flux:heading>
             <flux:text variant="subtle">{{ $activeSession->name }} Session</flux:text>

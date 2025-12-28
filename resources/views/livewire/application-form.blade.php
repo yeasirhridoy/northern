@@ -94,8 +94,9 @@ new class extends Component {
             ]);
         } elseif ($this->step === 4) {
             if (empty($this->selectedSubjects)) {
-                $this->addError('selectedSubjects', 'Please select at least one subject.');
-                throw new \Illuminate\Validation\ValidationException($this->getErrorBag());
+                throw \Illuminate\Validation\ValidationException::withMessages([
+                    'selectedSubjects' => 'Please select at least one subject.',
+                ]);
             }
         }
     }

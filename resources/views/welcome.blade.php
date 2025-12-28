@@ -47,11 +47,11 @@
 
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
                     @auth
-                         <flux:button href="{{ route('dashboard') }}" variant="primary" icon="arrow-right" icon-trailing>
+                        <flux:button href="{{ route('dashboard') }}" variant="primary" icon-trailing="arrow-right">
                             Go to Dashboard
                         </flux:button>
                     @else
-                        <flux:button href="{{ route('register') }}" variant="primary" icon="arrow-right" icon-trailing>
+                        <flux:button href="{{ route('register') }}" variant="primary" icon-trailing="arrow-right">
                             Apply Now
                         </flux:button>
                     @endauth

@@ -12,7 +12,6 @@ it('can submit an application with merged academic steps', function () {
     // Setup
     $user = User::factory()->create();
     $session = AdmissionSession::factory()->create([
-        'is_active' => true, 
         'start_date' => now()->subDay(), 
         'end_date' => now()->addDay()
     ]);

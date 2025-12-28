@@ -8,7 +8,7 @@ use Livewire\Volt\Volt;
 use function Pest\Laravel\actingAs;
 
 it('shows waitlist position correctly', function () {
-    $session = AdmissionSession::factory()->create(['is_active' => true]);
+    $session = AdmissionSession::factory()->create();
     
     // Create higher ranking waitlisted applicant
     Application::factory()->create([
@@ -77,7 +77,7 @@ it('shows fee payment instructions when admitted', function () {
     actingAs($user);
 
     Volt::test('application-details', ['application' => $application])
-        ->assertSee('Payment Instructions')
-        ->assertSee('Bank Details')
-        ->assertSee('Mobile Banking');
+        ->assertSee('Submit Payment Details')
+        ->assertSee('Bank Deposit')
+        ->assertSee('bKash');
 });

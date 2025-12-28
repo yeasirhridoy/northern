@@ -1,0 +1,17 @@
+{
+    "agents": [
+        "cursor",
+        "gemini",
+        "phpstorm"
+    ],
+    "editors": [
+        "cursor",
+        "gemini",
+        "phpstorm"
+    ],
+    "guidelines": [
+        "filament/filament",
+        "laravel/fortify"
+    ],
+    "herd_mcp": true
+}

@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Department extends Model
+{
+    protected $fillable = [
+        'name',
+        'code',
+    ];
+
+    public function subjects(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Subject::class);
+    }
+}

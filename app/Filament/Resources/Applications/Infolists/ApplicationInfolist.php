@@ -37,7 +37,7 @@ class ApplicationInfolist
                                         ->label('Assigned Subject')
                                         ->placeholder('Not Assigned Yet')
                                         ->weight(FontWeight::Bold),
-                                ])->columns(1),
+                                ])->columns(2),
                         ])->columnSpan(1),
 
                         SchemaComponents\Group::make([
@@ -59,8 +59,8 @@ class ApplicationInfolist
                                     InfolistComponents\TextEntry::make('payment_trx_id')
                                         ->label('Transaction ID'),
                                 ])->columns(2),
-                        ])->columnSpan(2),
-                    ]),
+                        ])->columnSpan(1),
+                    ])->columns(2)->columnSpanFull(),
 
                 SchemaComponents\Tabs::make('Detailed Information')
                     ->tabs([
@@ -96,7 +96,7 @@ class ApplicationInfolist
                                             ])->columns(4),
                                     ]),
                             ]),
-                        
+
                         SchemaComponents\Tabs\Tab::make('Subject Preferences')
                             ->schema([
                                 InfolistComponents\RepeatableEntry::make('preferences')

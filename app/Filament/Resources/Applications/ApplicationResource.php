@@ -11,6 +11,7 @@ use Filament\Actions\Action;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms;
+use Filament\Schemas;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -27,7 +28,7 @@ class ApplicationResource extends Resource
     {
         return $schema
             ->schema([
-                Forms\Components\Section::make('Status & Merit')
+                Schemas\Components\Section::make('Status & Merit')
                     ->schema([
                         Forms\Components\Select::make('status')
                             ->options([
@@ -47,9 +48,9 @@ class ApplicationResource extends Resource
                             ->placeholder('None'),
                     ])->columns(3),
 
-                Forms\Components\Tabs::make('Details')
+                Schemas\Components\Tabs::make('Details')
                     ->tabs([
-                        Forms\Components\Tabs\Tab::make('Personal Info')
+                        Schemas\Components\Tabs\Tab::make('Personal Info')
                             ->schema([
                                 Forms\Components\TextInput::make('father_name')->disabled(),
                                 Forms\Components\TextInput::make('mother_name')->disabled(),
@@ -57,15 +58,15 @@ class ApplicationResource extends Resource
                                 Forms\Components\TextInput::make('phone')->disabled(),
                                 Forms\Components\Textarea::make('address')->disabled()->columnSpanFull(),
                             ])->columns(2),
-                        Forms\Components\Tabs\Tab::make('Academic Info')
+                        Schemas\Components\Tabs\Tab::make('Academic Info')
                             ->schema([
-                                Forms\Components\Fieldset::make('SSC')
+                                Schemas\Components\Fieldset::make('SSC')
                                     ->schema([
                                         Forms\Components\TextInput::make('ssc_board')->disabled(),
                                         Forms\Components\TextInput::make('ssc_year')->disabled(),
                                         Forms\Components\TextInput::make('ssc_gpa')->disabled(),
                                     ])->columns(3),
-                                Forms\Components\Fieldset::make('HSC')
+                                Schemas\Components\Fieldset::make('HSC')
                                     ->schema([
                                         Forms\Components\TextInput::make('hsc_board')->disabled(),
                                         Forms\Components\TextInput::make('hsc_year')->disabled(),

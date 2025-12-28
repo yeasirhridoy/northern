@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Applications;
 
+use App\Filament\Resources\Applications\Infolists\ApplicationInfolist;
 use App\Filament\Resources\Applications\Pages\CreateApplication;
 use App\Filament\Resources\Applications\Pages\EditApplication;
 use App\Filament\Resources\Applications\Pages\ListApplications;
@@ -9,6 +10,7 @@ use App\Filament\Resources\Applications\Schemas\ApplicationForm;
 use App\Filament\Resources\Applications\Tables\ApplicationsTable;
 use App\Models\Application;
 use BackedEnum;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -28,6 +30,11 @@ class ApplicationResource extends Resource
     public static function table(Table $table): Table
     {
         return ApplicationsTable::configure($table);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return ApplicationInfolist::configure($infolist);
     }
 
     public static function getRelations(): array

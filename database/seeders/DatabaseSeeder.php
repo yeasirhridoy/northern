@@ -38,7 +38,6 @@ class DatabaseSeeder extends Seeder
         $eee = \App\Models\Department::create(['name' => 'Electrical Engineering', 'code' => 'EEE']);
 
         \App\Models\Subject::create(['department_id' => $cse->id, 'name' => 'Software Engineering', 'capacity' => 50]);
-        \App\Models\Subject::create(['department_id' => $cse->id, 'name' => 'Data Science', 'capacity' => 40]);
-        \App\Models\Subject::create(['department_id' => $eee->id, 'name' => 'Power Systems', 'capacity' => 60]);
+        $this->call(RealDataSeeder::class);
     }
 }

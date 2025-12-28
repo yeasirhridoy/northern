@@ -162,10 +162,9 @@ new class extends Component {
     }
 }; ?>
 
-<x-layouts.app>
-    <div class="max-w-4xl mx-auto p-6">
-        <div class="mb-8">
-            <flux:heading size="xl">{{ __('Admission Application') }}</flux:heading>
+<div class="max-w-4xl mx-auto p-6">
+    <div class="mb-8">
+        <flux:heading size="xl">{{ __('Admission Application') }}</flux:heading>
             <flux:text variant="subtle">{{ $activeSession->name }} Session</flux:text>
         </div>
 
@@ -310,4 +309,3 @@ new class extends Component {
             </div>
         </div>
     </div>
-</x-layouts.app>

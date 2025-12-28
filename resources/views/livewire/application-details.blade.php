@@ -25,11 +25,10 @@ new class extends Component {
     }
 }; ?>
 
-<x-layouts.app>
-    <div class="max-w-4xl mx-auto p-6">
-        <div class="flex items-center justify-between mb-8">
-            <div>
-                <flux:heading size="xl">{{ __('Application Details') }}</flux:heading>
+<div class="max-w-4xl mx-auto p-6">
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <flux:heading size="xl">{{ __('Application Details') }}</flux:heading>
                 <flux:text variant="subtle">{{ $application->session->name }} Session</flux:text>
             </div>
             <flux:badge color="blue" size="lg">{{ str($application->status)->headline() }}</flux:badge>
@@ -131,4 +130,3 @@ new class extends Component {
             <flux:button href="{{ route('dashboard') }}" icon="arrow-left" variant="ghost">{{ __('Back to Dashboard') }}</flux:button>
         </div>
     </div>
-</x-layouts.app>

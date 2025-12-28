@@ -31,7 +31,7 @@ The University Admission Portal is a web-based application designed to streamlin
     - Login & Forgot Password (using Fortify).
 - **Dashboard:**
     - View current application status (Draft, Submitted, Under Review, Waitlisted, Offered, Rejected).
-    - View notifications or remarks from admins.
+    - View remarks from admins.
 - **Application Process:**
     - **Step 1: Personal Information** (Name, Father's Name, Mother's Name, DOB, Address, Contact).
     - **Step 2: SSC/Equivalent Information** (Board, Roll, Registration, Year, GPA).
@@ -55,7 +55,6 @@ The University Admission Portal is a web-based application designed to streamlin
 ### 4.5. Waiting List Management
 - Automatic or manual handling of the waiting list.
 - Ability to promote a waitlisted candidate to 'Offered' if a seat opens up.
-- Notify applicants of status changes (Email/Dashboard).
 
 ### 4.6. Admission Confirmation
 - Track which students have accepted the offer.
@@ -71,7 +70,6 @@ The University Admission Portal is a web-based application designed to streamlin
 - `applications` (user_id, session_id, status, evaluation_score, assigned_subject_id)
 - `application_details` (personal_info, academic_history - JSON or separate tables)
 - `application_preferences` (application_id, subject_id, priority_order)
-- `application_documents` (application_id, type, path)
 
 ## 6. Milestones
 1.  **Setup:** Project initialization, Database design, Filament installation.

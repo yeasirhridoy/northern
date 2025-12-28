@@ -22,8 +22,8 @@ new class extends Component {
         $this->application = $application->load(['session', 'assignedSubject', 'preferences.subject']);
         $this->calculateWaitlistPosition();
         
-        // Initialize payment form if exists but maybe rejected? 
-        // Or keep empty for new submission.
+        // Initialize payment form
+        $this->payment_method = 'Bank';
     }
 
     public function calculateWaitlistPosition()

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name', 'Northern University') }} - Admission Portal</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <flux:appearance />
+    @fluxAppearance
 </head>
 <body class="antialiased min-h-screen bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200">
     <div class="relative min-h-screen flex flex-col selection:bg-[#FF2D20] selection:text-white">
@@ -47,14 +47,14 @@
 
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
                     @auth
-                         <flux:button href="{{ route('dashboard') }}" variant="primary" size="xl" icon="arrow-right" icon-trailing>
+                         <flux:button href="{{ route('dashboard') }}" variant="primary" icon="arrow-right" icon-trailing>
                             Go to Dashboard
                         </flux:button>
                     @else
-                        <flux:button href="{{ route('register') }}" variant="primary" size="xl" icon="arrow-right" icon-trailing>
+                        <flux:button href="{{ route('register') }}" variant="primary" icon="arrow-right" icon-trailing>
                             Apply Now
                         </flux:button>
-                        <flux:button href="{{ route('login') }}" variant="subtle" size="xl">
+                        <flux:button href="{{ route('login') }}" variant="subtle">
                             Existing Applicant Login
                         </flux:button>
                     @endauth

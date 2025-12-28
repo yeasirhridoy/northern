@@ -13,7 +13,7 @@
         <!-- Header / Navigation -->
         <header class="w-full py-6 px-6 lg:px-8 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center">
             <div class="flex items-center gap-2">
-                <x-app-logo class="h-10 w-auto text-blue-600 dark:text-blue-500" />
+                <x-app-logo-icon class="h-10 w-auto text-blue-600 dark:text-blue-500" />
                 <span class="text-xl font-bold tracking-tight">Northern University</span>
             </div>
             
@@ -53,9 +53,6 @@
                     @else
                         <flux:button href="{{ route('register') }}" variant="primary" icon="arrow-right" icon-trailing>
                             Apply Now
-                        </flux:button>
-                        <flux:button href="{{ route('login') }}" variant="subtle">
-                            Existing Applicant Login
                         </flux:button>
                     @endauth
                 </div>

@@ -31,6 +31,11 @@ class Application extends Model
         'hsc_year',
         'hsc_gpa',
         'hsc_group',
+        'payment_method',
+        'payment_amount',
+        'payment_trx_id',
+        'payment_status',
+        'registration_id',
     ];
 
     protected function casts(): array
@@ -40,6 +45,7 @@ class Application extends Model
             'ssc_gpa' => 'decimal:2',
             'hsc_gpa' => 'decimal:2',
             'merit_score' => 'decimal:2',
+            'payment_amount' => 'decimal:2',
         ];
     }
 

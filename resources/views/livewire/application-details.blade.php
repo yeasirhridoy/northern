@@ -7,6 +7,11 @@ new class extends Component {
     public Application $application;
     public ?int $waitlistPosition = null;
 
+    // Payment Form Properties
+    public $payment_method;
+    public $payment_amount;
+    public $payment_trx_id;
+
     public function mount(Application $application)
     {
         // Ensure user owns the application
@@ -16,6 +21,9 @@ new class extends Component {
 
         $this->application = $application->load(['session', 'assignedSubject', 'preferences.subject']);
         $this->calculateWaitlistPosition();
+        
+        // Initialize payment form if exists but maybe rejected? 
+        // Or keep empty for new submission.
     }
 
     public function calculateWaitlistPosition()
@@ -44,6 +52,25 @@ new class extends Component {
             $this->application->update(['status' => 'rejected']);
             $this->application = $this->application->refresh();
         }
+    }
+
+    public function submitPayment()
+    {
+        $this->validate([
+            'payment_method' => 'required|string',
+            'payment_amount' => 'required|numeric|min:10',
+            'payment_trx_id' => 'required|string',
+        ]);
+
+        $this->application->update([
+            'payment_method' => $this->payment_method,
+            'payment_amount' => $this->payment_amount,
+            'payment_trx_id' => $this->payment_trx_id,
+            'payment_status' => 'pending',
+        ]);
+
+        $this->application = $this->application->refresh();
+        $this->reset(['payment_method', 'payment_amount', 'payment_trx_id']);
     }
 
     public function getWaitlistPositionProperty()
@@ -152,12 +179,40 @@ new class extends Component {
 
                     @if($application->status === 'admitted')
                         <div class="mt-6 p-4 bg-blue-100 dark:bg-blue-900/30 rounded-lg border border-blue-200 dark:border-blue-800">
-                            <flux:heading size="sm" class="mb-2 text-blue-800 dark:text-blue-400">{{ __('Payment Instructions') }}</flux:heading>
-                            <div class="text-sm text-blue-800 dark:text-blue-300 space-y-2">
-                                <p><strong>{{ __('Bank Details:') }}</strong> Northern University Bank, A/C: 1234567890</p>
-                                <p><strong>{{ __('Mobile Banking:') }}</strong> bKash/Nagad: 01700000000 (Merchant)</p>
-                                <p class="text-xs mt-2">{{ __('Please use your Application ID as reference.') }}</p>
-                            </div>
+                            @if($application->payment_status === 'approved')
+                                <flux:heading size="sm" class="mb-2 text-green-800 dark:text-green-400">{{ __('Enrolled') }}</flux:heading>
+                                <p class="text-green-800 dark:text-green-400">
+                                    {{ __('Registration ID:') }} <strong>{{ $application->registration_id }}</strong>
+                                </p>
+                            @elseif($application->payment_status === 'pending')
+                                <flux:heading size="sm" class="mb-2 text-yellow-800 dark:text-yellow-400">{{ __('Payment Pending') }}</flux:heading>
+                                <p class="text-yellow-800 dark:text-yellow-400">
+                                    {{ __('Your payment is under review.') }}
+                                </p>
+                            @else
+                                <flux:heading size="sm" class="mb-4 text-blue-800 dark:text-blue-400">{{ __('Submit Payment Details') }}</flux:heading>
+                                
+                                @if($application->payment_status === 'rejected')
+                                    <div class="mb-4 p-2 bg-red-100 text-red-800 rounded">
+                                        {{ __('Your previous payment was rejected. Please try again.') }}
+                                    </div>
+                                @endif
+
+                                <form wire:submit="submitPayment" class="space-y-4">
+                                    <flux:select wire:model="payment_method" label="Payment Method" placeholder="Select method">
+                                        <option value="Bank">Bank Deposit</option>
+                                        <option value="bKash">bKash</option>
+                                        <option value="Nagad">Nagad</option>
+                                        <option value="Cash">Cash</option>
+                                    </flux:select>
+                                    
+                                    <flux:input wire:model="payment_amount" label="Amount" type="number" placeholder="Enter amount" />
+                                    
+                                    <flux:input wire:model="payment_trx_id" label="Transaction ID" placeholder="TrxID / Ref No" />
+                                    
+                                    <flux:button type="submit" variant="primary" class="w-full">{{ __('Submit Payment') }}</flux:button>
+                                </form>
+                            @endif
                         </div>
                     @endif
 

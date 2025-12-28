@@ -35,9 +35,18 @@ new class extends Component {
 
     public function mount()
     {
-        $this->activeSession = AdmissionSession::where('start_date', '<=', now())
-            ->where('end_date', '>=', now())
-            ->first();
+        $sessionId = request()->query('session_id');
+
+        if ($sessionId) {
+            $this->activeSession = AdmissionSession::where('id', $sessionId)
+                ->where('start_date', '<=', now())
+                ->where('end_date', '>=', now())
+                ->first();
+        } else {
+            $this->activeSession = AdmissionSession::where('start_date', '<=', now())
+                ->where('end_date', '>=', now())
+                ->first();
+        }
 
         if (! $this->activeSession) {
             return redirect()->route('dashboard');

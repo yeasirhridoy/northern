@@ -14,7 +14,7 @@
                     {{ __('Dashboard') }}
                 </flux:navbar.item>
                 @endauth
-                <flux:navbar.item icon="megaphone" :href="route('notices.index')" :current="request()->routeIs('notices.*')" wire:navigate>
+                <flux:navbar.item icon="newspaper" :href="route('notices.index')" :current="request()->routeIs('notices.*')" wire:navigate>
                     {{ __('Notices') }}
                 </flux:navbar.item>
             </flux:navbar>

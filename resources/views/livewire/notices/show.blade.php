@@ -26,7 +26,7 @@ new class extends Component {
 
         @if ($notice->image)
             <div class="mb-8 rounded-2xl overflow-hidden shadow-lg">
-                <img src="{{ asset('storage/' . $notice->image) }}" alt="{{ $notice->title }}" class="w-full h-auto object-cover">
+                <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($notice->image) }}" alt="{{ $notice->title }}" class="w-full h-auto object-cover">
             </div>
         @endif
 

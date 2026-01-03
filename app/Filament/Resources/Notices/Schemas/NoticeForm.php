@@ -15,6 +15,7 @@ class NoticeForm
                     ->maxLength(255),
                 \Filament\Forms\Components\FileUpload::make('image')
                     ->image()
+                    ->disk('public')
                     ->directory('notices'),
                 \Filament\Forms\Components\RichEditor::make('content')
                     ->required()

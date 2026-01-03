@@ -1,12 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
 
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
+
+Volt::route('notices', 'notices.index')->name('notices.index');
+Volt::route('notices/{notice}', 'notices.show')->name('notices.show');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])

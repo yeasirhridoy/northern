@@ -6,14 +6,23 @@
     <body class="min-h-screen bg-white dark:bg-zinc-800">
         <flux:header container class="border-b border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
             <flux:navbar class="-mb-px max-lg:hidden">
-                <flux:navbar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
+                <flux:navbar.item icon="home" :href="route('home')" :current="request()->routeIs('home')" wire:navigate>
+                    {{ __('Home') }}
+                </flux:navbar.item>
+                @auth
+                <flux:navbar.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                     {{ __('Dashboard') }}
+                </flux:navbar.item>
+                @endauth
+                <flux:navbar.item icon="megaphone" :href="route('notices.index')" :current="request()->routeIs('notices.*')" wire:navigate>
+                    {{ __('Notices') }}
                 </flux:navbar.item>
             </flux:navbar>
 
             <flux:spacer />
 
             <!-- Desktop User Menu -->
+            @auth
             <flux:dropdown position="top" align="end">
                 <flux:profile
                     class="cursor-pointer"
@@ -56,6 +65,12 @@
                     </form>
                 </flux:menu>
             </flux:dropdown>
+            @else
+                <flux:navbar class="flex gap-4">
+                    <flux:navbar.item :href="route('login')" wire:navigate>{{ __('Log in') }}</flux:navbar.item>
+                    <flux:navbar.item :href="route('register')" wire:navigate>{{ __('Register') }}</flux:navbar.item>
+                </flux:navbar>
+            @endauth
         </flux:header>
 
         {{ $slot }}

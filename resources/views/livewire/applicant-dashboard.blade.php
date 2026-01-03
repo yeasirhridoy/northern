@@ -92,4 +92,29 @@ new class extends Component {
             <flux:text class="mt-2">{{ __('There are currently no open admission sessions. Please check back later.') }}</flux:text>
         </div>
     @endif
+
+    <div class="mt-8">
+        <div class="flex items-center justify-between mb-4">
+            <flux:heading size="lg">{{ __('Latest Notices') }}</flux:heading>
+            <flux:button href="{{ route('notices.index') }}" variant="ghost" size="sm" icon-trailing="arrow-right">{{ __('View All') }}</flux:button>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            @php
+                $notices = \App\Models\Notice::where('is_active', true)->latest()->take(3)->get();
+            @endphp
+            @foreach ($notices as $notice)
+                <a href="{{ route('notices.show', $notice) }}" class="p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm hover:border-blue-500 dark:hover:border-blue-500 transition-colors">
+                    <div class="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400 mb-2">
+                        <flux:icon.calendar class="size-3" />
+                        <span>{{ $notice->created_at->format('M d, Y') }}</span>
+                    </div>
+                    <h4 class="font-bold text-zinc-900 dark:text-white line-clamp-1">{{ $notice->title }}</h4>
+                    <div class="mt-2 text-xs text-zinc-600 dark:text-zinc-400 line-clamp-2">
+                        {!! strip_tags($notice->content) !!}
+                    </div>
+                </a>
+            @endforeach
+        </div>
+    </div>
 </div>

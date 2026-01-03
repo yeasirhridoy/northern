@@ -29,6 +29,7 @@
                         @endif
                     @endauth
                 @endif
+                <flux:button href="{{ route('notices.index') }}" variant="ghost">Notices</flux:button>
             </nav>
         </header>
 
@@ -56,6 +57,37 @@
                         </flux:button>
                     @endauth
                 </div>
+
+                <!-- Latest Notices -->
+                @php
+                    $latestNotices = \App\Models\Notice::where('is_active', true)->latest()->take(5)->get();
+                @endphp
+                @if($latestNotices->isNotEmpty())
+                    <div class="mt-12 max-w-2xl mx-auto">
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 class="text-2xl font-bold text-zinc-900 dark:text-white">Latest Notices</h2>
+                            <flux:button href="{{ route('notices.index') }}" variant="ghost" size="sm">View All</flux:button>
+                        </div>
+                        <div class="space-y-4 text-left">
+                            @foreach($latestNotices as $notice)
+                                <a href="{{ route('notices.show', $notice) }}" class="block p-4 rounded-xl bg-white dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-800 hover:border-blue-500 dark:hover:border-blue-500 transition-all group shadow-sm">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex-1">
+                                            <div class="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400 mb-1">
+                                                <flux:icon.calendar class="size-3" />
+                                                <span>{{ $notice->created_at->format('M d, Y') }}</span>
+                                            </div>
+                                            <h3 class="font-semibold text-zinc-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-1">
+                                                {{ $notice->title }}
+                                            </h3>
+                                        </div>
+                                        <flux:icon.chevron-right class="size-4 text-zinc-400 group-hover:text-blue-500 group-hover:translate-x-1 transition-all" />
+                                    </div>
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
 
                 <!-- Features / Info Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 text-left">

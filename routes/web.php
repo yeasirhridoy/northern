@@ -9,6 +9,7 @@ Route::get('/', function () {
 
 Volt::route('notices', 'notices.index')->name('notices.index');
 Volt::route('notices/{notice}', 'notices.show')->name('notices.show');
+Volt::route('departments', 'departments.index')->name('departments.index');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])

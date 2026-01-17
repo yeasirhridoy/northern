@@ -1,40 +1,8 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ config('app.name', 'Northern University') }} - Admission Portal</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @fluxAppearance
-</head>
-<body class="antialiased min-h-screen bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200">
-    <div class="relative min-h-screen flex flex-col selection:bg-[#FF2D20] selection:text-white">
-        
-        <!-- Header / Navigation -->
-        <header class="w-full py-6 px-6 lg:px-8 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <x-app-logo-icon class="h-10 w-auto text-blue-600 dark:text-blue-500" />
-                <span class="text-xl font-bold tracking-tight">Northern University</span>
-            </div>
-            
-            <nav class="flex items-center gap-4">
-                @if (Route::has('login'))
-                    @auth
-                        <flux:button href="{{ url('/dashboard') }}" variant="ghost">Dashboard</flux:button>
-                    @else
-                        <flux:button href="{{ route('login') }}" variant="ghost">Log in</flux:button>
-
-                        @if (Route::has('register'))
-                            <flux:button href="{{ route('register') }}" variant="primary">Register</flux:button>
-                        @endif
-                    @endauth
-                @endif
-                <flux:button href="{{ route('notices.index') }}" variant="ghost">Notices</flux:button>
-            </nav>
-        </header>
+<x-layouts.app>
+    <div class="relative flex flex-col selection:bg-[#FF2D20] selection:text-white">
 
         <!-- Hero Section -->
-        <main class="flex-1 flex flex-col items-center justify-center p-6 text-center lg:p-8">
+        <div class="flex-1 flex flex-col items-center justify-center py-12 text-center lg:py-16">
             <div class="max-w-3xl mx-auto space-y-8">
                 <div class="space-y-4">
                     <h1 class="text-5xl font-extrabold tracking-tight text-zinc-900 dark:text-white sm:text-6xl">
@@ -114,14 +82,6 @@
                     </div>
                 </div>
             </div>
-        </main>
-
-        <!-- Footer -->
-        <footer class="py-8 text-center text-sm text-zinc-500 dark:text-zinc-400 border-t border-zinc-200 dark:border-zinc-800">
-            &copy; {{ date('Y') }} Northern University. All rights reserved.
-        </footer>
+        </div>
     </div>
-    <livewire:chat-widget />
-    @fluxScripts
-</body>
-</html>
+</x-layouts.app>

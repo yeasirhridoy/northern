@@ -31,6 +31,15 @@ class DepartmentResource extends Resource
                     ->required()
                     ->unique(ignoreRecord: true)
                     ->maxLength(255),
+                Forms\Components\RichEditor::make('description')
+                    ->columnSpanFull(),
+                Forms\Components\Repeater::make('costing')
+                    ->schema([
+                        Forms\Components\TextInput::make('label')->required(),
+                        Forms\Components\TextInput::make('amount')->required(),
+                        Forms\Components\TextInput::make('type')->required(),
+                    ])
+                    ->columnSpanFull(),
             ]);
     }
 

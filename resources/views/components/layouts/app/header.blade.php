@@ -3,7 +3,7 @@
     <head>
         @include('partials.head')
     </head>
-    <body class="min-h-screen bg-white dark:bg-zinc-800">
+    <body class="min-h-screen bg-white dark:bg-zinc-800 flex flex-col">
         <flux:header container class="border-b border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
             <flux:navbar class="-mb-px max-lg:hidden">
                 <flux:navbar.item icon="home" :href="route('home')" :current="request()->routeIs('home')" wire:navigate>
@@ -16,6 +16,9 @@
                 @endauth
                 <flux:navbar.item icon="newspaper" :href="route('notices.index')" :current="request()->routeIs('notices.*')" wire:navigate>
                     {{ __('Notices') }}
+                </flux:navbar.item>
+                <flux:navbar.item icon="building-library" :href="route('departments.index')" :current="request()->routeIs('departments.*')" wire:navigate>
+                    {{ __('Departments') }}
                 </flux:navbar.item>
             </flux:navbar>
 

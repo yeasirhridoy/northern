@@ -99,11 +99,6 @@ new class extends Component {
                            <p class="text-zinc-500 italic">Costing information coming soon.</p>
                         @endif
                         
-                         <div class="mt-8 border-t border-zinc-200 dark:border-zinc-700 pt-6">
-                             <flux:button variant="primary" icon="arrow-right">
-                                Apply Now
-                             </flux:button>
-                         </div>
                     </div>
                 @else
                     <div class="flex flex-col items-center justify-center p-12 text-center text-zinc-500">

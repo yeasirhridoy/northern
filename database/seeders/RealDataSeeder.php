@@ -104,6 +104,75 @@ class RealDataSeeder extends Seeder
             ]
         ]);
 
+        $textile = Department::firstOrCreate(['code' => 'TEX'], [
+            'name' => 'Textile Engineering',
+            'description' => '<p>Bangladesh is a global leader in the Ready-Made Garment (RMG) sector, and our Textile Engineering program is designed to produce leaders for this vital industry. We cover the entire value chain from fiber to fashion.</p>
+            <p>Students learn about yarn manufacturing, fabric manufacturing, wet processing, and apparel manufacturing. We also emphasize sustainable textile practices and industrial compliance.</p>
+            <p><strong>Industry Links:</strong></p>
+            <ul>
+                <li>Industrial attachments with top BGMEA member factories.</li>
+                <li>Labs for dyeing, printing, and quality control.</li>
+                <li>Workshops on Merchandising and Supply Chain Management.</li>
+            </ul>',
+            'costing' => [
+                ['label' => 'Admission Fee', 'amount' => '20,000 BDT', 'type' => 'One-time'],
+                ['label' => 'Tuition Fee (per credit)', 'amount' => '4,000 BDT', 'type' => 'Recurring'],
+                ['label' => 'Textile Lab Fee', 'amount' => '5,000 BDT', 'type' => 'Per Semester'],
+                ['label' => 'Industrial Tour Fee', 'amount' => '3,000 BDT', 'type' => 'Per Year'],
+            ]
+        ]);
+
+        $pharm = Department::firstOrCreate(['code' => 'PHARM'], [
+            'name' => 'Pharmacy',
+            'description' => '<p>The Department of Pharmacy offers a comprehensive education in pharmaceutical sciences, preparing students for careers in the booming pharmaceutical industry of Bangladesh. Our curriculum meets the standards of the Pharmacy Council of Bangladesh.</p>
+            <p>We focus on Pharmacology, Pharmaceutical Chemistry, Pharmaceutics, and Clinical Pharmacy. Our graduates are highly sought after by top pharma companies and hospitals.</p>
+            <p><strong>Key Features:</strong></p>
+            <ul>
+                <li>State-of-the-art sterile formulation labs.</li>
+                <li>Research opportunities in drug discovery and development.</li>
+                <li>Hospital residency programs.</li>
+            </ul>',
+            'costing' => [
+                ['label' => 'Admission Fee', 'amount' => '25,000 BDT', 'type' => 'One-time'],
+                ['label' => 'Tuition Fee (per credit)', 'amount' => '5,500 BDT', 'type' => 'Recurring'],
+                ['label' => 'Lab & Chemical Fee', 'amount' => '8,000 BDT', 'type' => 'Per Semester'],
+            ]
+        ]);
+
+        $ce = Department::firstOrCreate(['code' => 'CE'], [
+            'name' => 'Civil Engineering',
+            'description' => '<p>As Bangladesh undergoes massive infrastructure development, the demand for skilled Civil Engineers is at an all-time high. Our program equips students to design, build, and maintain the structures that shape our nation.</p>
+            <p>We cover Structural Engineering, Geotechnical Engineering, Transportation, and Water Resources Engineering. We emphasize resilience and sustainability in the context of climate change.</p>
+            <p><strong>Labs & Facilities:</strong></p>
+            <ul>
+                <li>Concrete & Materials Testing Lab.</li>
+                <li>Soil Mechanics Lab.</li>
+                <li>Environmental Engineering Lab.</li>
+            </ul>',
+            'costing' => [
+                ['label' => 'Admission Fee', 'amount' => '22,000 BDT', 'type' => 'One-time'],
+                ['label' => 'Tuition Fee (per credit)', 'amount' => '4,800 BDT', 'type' => 'Recurring'],
+                ['label' => 'Lab Fee', 'amount' => '6,000 BDT', 'type' => 'Per Semester'],
+            ]
+        ]);
+
+        $arch = Department::firstOrCreate(['code' => 'ARCH'], [
+            'name' => 'Architecture',
+            'description' => '<p>The Department of Architecture fosters creativity and technical expertise to create spaces that inspire. We blend art, science, and technology to design sustainable and culturally relevant built environments.</p>
+            <p>Our studio-based learning approach encourages experimentation and critical discourse. Students explore urban planning, landscape architecture, and interior design.</p>
+            <p><strong>Highlights:</strong></p>
+            <ul>
+                <li>Design Studios with individual workspaces.</li>
+                <li>Model Making Workshop.</li>
+                <li>Exhibitions and Juries with renowned architects.</li>
+            </ul>',
+            'costing' => [
+                ['label' => 'Admission Fee', 'amount' => '30,000 BDT', 'type' => 'One-time'],
+                ['label' => 'Tuition Fee (per credit)', 'amount' => '5,000 BDT', 'type' => 'Recurring'],
+                ['label' => 'Design Studio Fee', 'amount' => '5,000 BDT', 'type' => 'Per Semester'],
+            ]
+        ]);
+
         $subjects = collect([
             Subject::firstOrCreate(['name' => 'Software Engineering', 'department_id' => $cse->id], ['capacity' => 60]),
             Subject::firstOrCreate(['name' => 'Data Science', 'department_id' => $cse->id], ['capacity' => 50]),
@@ -113,6 +182,14 @@ class RealDataSeeder extends Seeder
             Subject::firstOrCreate(['name' => 'Marketing', 'department_id' => $bba->id], ['capacity' => 80]),
             Subject::firstOrCreate(['name' => 'Literature', 'department_id' => $eng->id], ['capacity' => 50]),
             Subject::firstOrCreate(['name' => 'Criminal Law', 'department_id' => $law->id], ['capacity' => 40]),
+            Subject::firstOrCreate(['name' => 'Apparel Manufacturing', 'department_id' => $textile->id], ['capacity' => 60]),
+            Subject::firstOrCreate(['name' => 'Fabric Engineering', 'department_id' => $textile->id], ['capacity' => 60]),
+            Subject::firstOrCreate(['name' => 'Pharmacology', 'department_id' => $pharm->id], ['capacity' => 60]),
+            Subject::firstOrCreate(['name' => 'Clinical Pharmacy', 'department_id' => $pharm->id], ['capacity' => 60]),
+            Subject::firstOrCreate(['name' => 'Structural Engineering', 'department_id' => $ce->id], ['capacity' => 60]),
+            Subject::firstOrCreate(['name' => 'Geotechnical Engineering', 'department_id' => $ce->id], ['capacity' => 60]),
+            Subject::firstOrCreate(['name' => 'Urban Design', 'department_id' => $arch->id], ['capacity' => 40]),
+            Subject::firstOrCreate(['name' => 'Interior Architecture', 'department_id' => $arch->id], ['capacity' => 40]),
         ]);
 
         // 2. Create Two Sessions

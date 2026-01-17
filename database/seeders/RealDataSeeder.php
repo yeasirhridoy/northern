@@ -8,6 +8,7 @@ use App\Models\ApplicationPreference;
 use App\Models\Department;
 use App\Models\Subject;
 use App\Models\User;
+use App\Models\Notice;
 use Illuminate\Database\Seeder;
 
 class RealDataSeeder extends Seeder
@@ -273,5 +274,24 @@ class RealDataSeeder extends Seeder
                 ]);
             }
         }
+
+        // 4. Create Notices
+        Notice::create([
+            'title' => 'Admission Open for Spring 2026',
+            'content' => 'Applications are now being accepted for the Spring 2026 semester. Apply online by January 30th to secure your spot in our diverse range of programs.',
+            'is_active' => true,
+        ]);
+
+        Notice::create([
+            'title' => 'Convocation 2025 Registration',
+            'content' => 'Graduates of 2024 and 2025 are invited to register for the 10th Convocation Ceremony. Registration closes on December 15th.',
+            'is_active' => true,
+        ]);
+
+        Notice::create([
+            'title' => 'Research Grant Awards Announced',
+            'content' => 'Northern University is proud to announce the recipients of this year\'s research grants. Congratulations to our faculty and students for their innovative proposals.',
+            'is_active' => true,
+        ]);
     }
 }

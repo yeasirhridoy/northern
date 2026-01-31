@@ -16,7 +16,12 @@ class NoticeForm
                 \Filament\Forms\Components\FileUpload::make('image')
                     ->image()
                     ->disk('public')
-                    ->directory('notices'),
+                    ->directory('notices/images'),
+                \Filament\Forms\Components\FileUpload::make('file')
+                    ->label('PDF Attachment')
+                    ->acceptedFileTypes(['application/pdf'])
+                    ->disk('public')
+                    ->directory('notices/files'),
                 \Filament\Forms\Components\RichEditor::make('content')
                     ->required()
                     ->columnSpanFull(),

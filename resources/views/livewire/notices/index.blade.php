@@ -26,9 +26,14 @@ new class extends Component {
             @foreach ($notices as $notice)
                 <div wire:key="notice-{{ $notice->id }}" class="bg-white dark:bg-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-700 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
                     <div class="p-6">
-                        <div class="flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400 mb-2">
-                            <flux:icon.calendar class="size-4" />
-                            <span>{{ $notice->created_at->format('M d, Y') }}</span>
+                        <div class="flex items-center gap-4 text-sm text-zinc-500 dark:text-zinc-400 mb-2">
+                            <div class="flex items-center gap-2">
+                                <flux:icon.calendar class="size-4" />
+                                <span>{{ $notice->created_at->format('M d, Y') }}</span>
+                            </div>
+                            @if ($notice->file)
+                                <flux:badge color="blue" icon="document-text" size="sm" variant="pill">PDF Attachment</flux:badge>
+                            @endif
                         </div>
                         <h2 class="text-xl font-bold text-zinc-900 dark:text-white mb-3">
                             <a href="{{ route('notices.show', $notice) }}" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">

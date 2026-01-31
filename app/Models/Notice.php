@@ -9,6 +9,7 @@ class Notice extends Model
     protected $fillable = [
         'title',
         'image',
+        'file',
         'content',
         'is_active',
     ];

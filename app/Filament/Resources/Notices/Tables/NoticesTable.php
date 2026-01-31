@@ -17,6 +17,11 @@ class NoticesTable
                     ->searchable()
                     ->sortable(),
                 \Filament\Tables\Columns\ImageColumn::make('image'),
+                \Filament\Tables\Columns\IconColumn::make('file')
+                    ->label('PDF')
+                    ->icon('heroicon-o-document-text')
+                    ->color('info')
+                    ->getStateUsing(fn ($record) => filled($record->file)),
                 \Filament\Tables\Columns\IconColumn::make('is_active')
                     ->label('Active')
                     ->boolean()

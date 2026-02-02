@@ -3,7 +3,7 @@
     <section class="relative pt-20 pb-32 overflow-hidden bg-white dark:bg-zinc-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
             <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-zinc-900 dark:text-white mb-8">
-                Shape Your Future at <br>
+                Admission Portal <br>
                 <span class="text-blue-600 dark:text-blue-500">Northern University</span>
             </h1>
             <p class="text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed">

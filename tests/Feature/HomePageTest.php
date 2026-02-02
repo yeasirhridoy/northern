@@ -5,7 +5,7 @@ test('home page can be rendered', function () {
     $response = $this->get('/');
 
     $response->assertStatus(200);
-    $response->assertSee('Shape Your Future at');
+    $response->assertSee('Admission Portal');
     $response->assertSee('Northern University');
     $response->assertSee('Featured Departments');
     $response->assertSee('Notice Board');

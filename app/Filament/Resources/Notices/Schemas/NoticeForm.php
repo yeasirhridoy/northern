@@ -12,6 +12,7 @@ class NoticeForm
             ->components([
                 \Filament\Forms\Components\TextInput::make('title')
                     ->required()
+                    ->columnSpanFull()
                     ->maxLength(255),
                 \Filament\Forms\Components\FileUpload::make('image')
                     ->image()

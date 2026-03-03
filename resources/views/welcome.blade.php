@@ -59,27 +59,60 @@
     </style>
 
     <!-- Stats Section -->
-    <section class="py-12 bg-zinc-900 text-white relative overflow-hidden">
+    <section class="py-16 bg-zinc-900 text-white relative overflow-hidden" x-data="{ 
+        counters: {
+            students: { current: 0, target: 10, suffix: 'k+' },
+            years: { current: 0, target: 15, suffix: '+' },
+            labs: { current: 0, target: 50, suffix: '+' },
+            alumni: { current: 0, target: 20, suffix: 'k+' }
+        },
+        animateCounter(key) {
+            let start = 0;
+            let end = this.counters[key].target;
+            let duration = 2000;
+            let startTime = null;
+
+            const step = (timestamp) => {
+                if (!startTime) startTime = timestamp;
+                const progress = Math.min((timestamp - startTime) / duration, 1);
+                this.counters[key].current = Math.floor(progress * (end - start) + start);
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+
+            window.requestAnimationFrame(step);
+        }
+    }">
         <div class="absolute inset-0">
              <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070&auto=format&fit=crop" class="object-cover w-full h-full opacity-10" alt="Stats Background" />
         </div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center" 
+                 x-intersect.once="animateCounter('students'); animateCounter('years'); animateCounter('labs'); animateCounter('alumni');">
                 <div>
-                    <div class="text-4xl font-bold mb-1">10k+</div>
-                    <div class="text-sm text-zinc-400 uppercase tracking-wider font-semibold">Students</div>
+                    <div class="text-5xl font-black mb-2 text-transparent bg-clip-text bg-linear-to-b from-white to-zinc-500">
+                        <span x-text="counters.students.current">0</span><span x-text="counters.students.suffix">k+</span>
+                    </div>
+                    <div class="text-xs text-zinc-400 uppercase tracking-[0.2em] font-bold">Students</div>
                 </div>
                 <div>
-                    <div class="text-4xl font-bold mb-1">15+</div>
-                    <div class="text-sm text-zinc-400 uppercase tracking-wider font-semibold">Years of Excellence</div>
+                    <div class="text-5xl font-black mb-2 text-transparent bg-clip-text bg-linear-to-b from-white to-zinc-500">
+                        <span x-text="counters.years.current">0</span><span x-text="counters.years.suffix">+</span>
+                    </div>
+                    <div class="text-xs text-zinc-400 uppercase tracking-[0.2em] font-bold">Years of Excellence</div>
                 </div>
                 <div>
-                    <div class="text-4xl font-bold mb-1">50+</div>
-                    <div class="text-sm text-zinc-400 uppercase tracking-wider font-semibold">Modern Labs</div>
+                    <div class="text-5xl font-black mb-2 text-transparent bg-clip-text bg-linear-to-b from-white to-zinc-500">
+                        <span x-text="counters.labs.current">0</span><span x-text="counters.labs.suffix">+</span>
+                    </div>
+                    <div class="text-xs text-zinc-400 uppercase tracking-[0.2em] font-bold">Modern Labs</div>
                 </div>
                 <div>
-                    <div class="text-4xl font-bold mb-1">20k+</div>
-                    <div class="text-sm text-zinc-400 uppercase tracking-wider font-semibold">Alumni</div>
+                    <div class="text-5xl font-black mb-2 text-transparent bg-clip-text bg-linear-to-b from-white to-zinc-500">
+                        <span x-text="counters.alumni.current">0</span><span x-text="counters.alumni.suffix">k+</span>
+                    </div>
+                    <div class="text-xs text-zinc-400 uppercase tracking-[0.2em] font-bold">Alumni</div>
                 </div>
             </div>
         </div>

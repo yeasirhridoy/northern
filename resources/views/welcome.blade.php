@@ -1,35 +1,50 @@
 <x-layouts.app>
     <!-- Hero Section -->
-    <section class="relative pt-20 pb-32 overflow-hidden bg-white dark:bg-zinc-900">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-            <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-zinc-900 dark:text-white mb-8">
-                Admission Portal <br>
-                <span class="text-blue-600 dark:text-blue-500">Northern University</span>
-            </h1>
-            <p class="text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-                Join a community of innovators and leaders. Applications are now open for the upcoming academic session. Experience world-class education in the heart of the city.
-            </p>
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                @auth
-                    <flux:button href="{{ route('dashboard') }}" variant="primary" icon-trailing="arrow-right" class="font-semibold !py-3 !px-6">
-                        Go to Dashboard
-                    </flux:button>
-                @else
-                    <flux:button href="{{ route('register') }}" variant="primary" icon-trailing="arrow-right" class="font-semibold !py-3 !px-6">
-                        Apply Now
-                    </flux:button>
-                    <flux:button href="{{ route('departments.index') }}" variant="ghost" class="font-semibold !py-3 !px-6">
-                        Explore Departments
-                    </flux:button>
-                @endauth
+    <section class="relative min-h-[80vh] flex items-center overflow-hidden">
+        <!-- Background Image with Overlay -->
+        <div class="absolute inset-0 z-0">
+            <img src="/hero-bg.png" alt="Northern University Campus" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-r from-zinc-950/90 via-zinc-950/60 to-transparent"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+            <div class="max-w-3xl">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-medium mb-6 backdrop-blur-md">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                    </span>
+                    Admissions Open for Spring 2026
+                </div>
+                
+                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-white mb-8 leading-[1.1]">
+                    Empowering the <br>
+                    <span class="text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-indigo-400">Next Generation</span>
+                </h1>
+                
+                <p class="text-xl text-zinc-300 max-w-2xl mb-10 leading-relaxed font-light">
+                    Join Northern University's vibrant community of innovators. Experience world-class education, cutting-edge research, and a campus life designed for your success.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row items-center gap-4">
+                    @auth
+                        <flux:button href="{{ route('dashboard') }}" variant="primary" icon-trailing="arrow-right" class="!h-12 !px-8 text-lg !bg-blue-600 !text-white !border-blue-600 hover:!bg-blue-700 shadow-xl shadow-blue-500/40">
+                            Go to Dashboard
+                        </flux:button>
+                    @else
+                        <flux:button href="{{ route('register') }}" variant="primary" icon-trailing="arrow-right" class="!h-12 !px-8 text-lg !bg-blue-600 !text-white !border-blue-600 hover:!bg-blue-700 shadow-xl shadow-blue-500/40">
+                            Apply Now
+                        </flux:button>
+                        <flux:button href="{{ route('departments.index') }}" variant="ghost" class="!h-12 !px-8 text-lg !text-white !border-2 !border-white/40 hover:!bg-white/10 hover:!border-white backdrop-blur-sm transition-all">
+                            Explore Departments
+                        </flux:button>
+                    @endauth
+                </div>
             </div>
         </div>
         
-        <!-- Background Elements -->
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl pointer-events-none opacity-50 dark:opacity-20">
-            <div class="absolute top-10 left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl mix-blend-multiply filter"></div>
-            <div class="absolute bottom-10 right-10 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl mix-blend-multiply filter"></div>
-        </div>
+        <!-- Bottom Fade -->
+        <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white dark:from-zinc-900 to-transparent z-1"></div>
     </section>
 
     <!-- Stats Section -->

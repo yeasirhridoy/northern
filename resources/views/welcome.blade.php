@@ -1,51 +1,62 @@
 <x-layouts.app>
     <!-- Hero Section -->
-    <section class="relative min-h-[80vh] flex items-center overflow-hidden">
-        <!-- Background Image with Overlay -->
+    <!-- Hero Section -->
+    <section class="relative min-h-[600px] md:min-h-[85vh] flex items-center overflow-hidden bg-zinc-950">
+        <!-- Background Image with Optimized Coverage -->
         <div class="absolute inset-0 z-0">
-            <img src="/hero-bg.png" alt="Northern University Campus" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-r from-zinc-950/90 via-zinc-950/60 to-transparent"></div>
+            <img src="/hero-bg.png?v=2" alt="Northern University Campus" class="w-full h-full object-cover object-center scale-105 animate-subtle-zoom">
+            <!-- Advanced Overlays for Depth and Quality -->
+            <div class="absolute inset-0 bg-gradient-to-r from-zinc-950/95 via-zinc-950/70 to-zinc-950/30"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent opacity-80"></div>
+            <div class="absolute inset-0 opacity-20" style="background-image: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');"></div>
         </div>
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-            <div class="max-w-3xl">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-medium mb-6 backdrop-blur-md">
-                    <span class="relative flex h-2 w-2">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full pt-12">
+            <div class="max-w-4xl">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-sm font-semibold mb-8 backdrop-blur-xl">
+                    <span class="relative flex h-2.5 w-2.5">
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-blue-500"></span>
                     </span>
-                    Admissions Open for Spring 2026
+                    Admission Portal 2026 • Spring Session Open
                 </div>
                 
-                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-white mb-8 leading-[1.1]">
-                    Empowering the <br>
-                    <span class="text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-indigo-400">Next Generation</span>
+                <h1 class="text-5xl md:text-8xl font-black tracking-tight text-white mb-8 leading-[1] drop-shadow-2xl">
+                    Experience the <br>
+                    <span class="text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-indigo-400 to-purple-400">Future of Learning</span>
                 </h1>
                 
-                <p class="text-xl text-zinc-300 max-w-2xl mb-10 leading-relaxed font-light">
-                    Join Northern University's vibrant community of innovators. Experience world-class education, cutting-edge research, and a campus life designed for your success.
+                <p class="text-lg md:text-2xl text-zinc-300 max-w-2xl mb-12 leading-relaxed font-normal opacity-90">
+                    Northern University combines academic excellence with a vibrant campus culture. Join thousands of students shaping their tomorrow in our state-of-the-art facilities.
                 </p>
                 
-                <div class="flex flex-col sm:flex-row items-center gap-4">
+                <div class="flex flex-wrap items-center gap-6">
                     @auth
-                        <flux:button href="{{ route('dashboard') }}" variant="primary" icon-trailing="arrow-right" class="!h-12 !px-8 text-lg !bg-blue-600 !text-white !border-blue-600 hover:!bg-blue-700 shadow-xl shadow-blue-500/40">
+                        <flux:button href="{{ route('dashboard') }}" variant="primary" icon-trailing="arrow-right" class="!h-14 !px-10 text-xl !bg-blue-600 !text-white !border-blue-600 hover:!bg-blue-700 shadow-[0_0_40px_-10px_rgba(37,99,235,0.5)] transition-all duration-300">
                             Go to Dashboard
                         </flux:button>
                     @else
-                        <flux:button href="{{ route('register') }}" variant="primary" icon-trailing="arrow-right" class="!h-12 !px-8 text-lg !bg-blue-600 !text-white !border-blue-600 hover:!bg-blue-700 shadow-xl shadow-blue-500/40">
+                        <flux:button href="{{ route('register') }}" variant="primary" icon-trailing="arrow-right" class="!h-14 !px-10 text-xl !bg-blue-600 !text-white !border-blue-600 hover:!bg-blue-700 shadow-[0_0_40px_-10px_rgba(37,99,235,0.5)] transition-all duration-300">
                             Apply Now
                         </flux:button>
-                        <flux:button href="{{ route('departments.index') }}" variant="ghost" class="!h-12 !px-8 text-lg !text-white !border-2 !border-white/40 hover:!bg-white/10 hover:!border-white backdrop-blur-sm transition-all">
-                            Explore Departments
+                        <flux:button href="{{ route('departments.index') }}" variant="ghost" class="!h-14 !px-10 text-xl !text-white !border-2 !border-white/50 hover:!border-white hover:!bg-white/10 backdrop-blur-md transition-all duration-300">
+                            See Programs
                         </flux:button>
                     @endauth
                 </div>
             </div>
         </div>
-        
-        <!-- Bottom Fade -->
-        <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white dark:from-zinc-900 to-transparent z-1"></div>
     </section>
+
+    <style>
+        @keyframes subtle-zoom {
+            0% { transform: scale(1.0); }
+            100% { transform: scale(1.1); }
+        }
+        .animate-subtle-zoom {
+            animation: subtle-zoom 30s ease-in-out infinite alternate;
+        }
+    </style>
 
     <!-- Stats Section -->
     <section class="py-12 bg-zinc-900 text-white relative overflow-hidden">

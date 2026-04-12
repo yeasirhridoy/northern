@@ -22,8 +22,8 @@
                 </div>
                 
                 <h1 class="text-5xl md:text-8xl font-black tracking-tight text-white mb-8 leading-[1] drop-shadow-2xl">
-                    Experience the <br>
-                    <span class="text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-indigo-400 to-purple-400">Future of Learning</span>
+                    Northern University <br>
+                    <span class="text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-indigo-400 to-purple-400">Admission Portal</span>
                 </h1>
                 
                 <p class="text-lg md:text-2xl text-zinc-300 max-w-2xl mb-12 leading-relaxed font-normal opacity-90">

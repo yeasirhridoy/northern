@@ -14,3 +14,11 @@ test('authenticated users can visit the dashboard', function () {
     $response = $this->get(route('dashboard'));
     $response->assertStatus(200);
 });
+
+test('unverified users are redirected to the email verification page', function () {
+    $user = User::factory()->unverified()->create();
+    $this->actingAs($user);
+
+    $response = $this->get(route('dashboard'));
+    $response->assertRedirect(route('verification.notice'));
+});

@@ -155,6 +155,15 @@ EOT;
 }; ?>
 
 <div class="fixed bottom-6 right-6 z-50 font-sans">
+    <style>
+        .chat-markdown p { margin-bottom: 0.75rem; }
+        .chat-markdown p:last-child { margin-bottom: 0; }
+        .chat-markdown ul { list-style-type: disc; margin-left: 1rem; margin-bottom: 0.75rem; }
+        .chat-markdown ol { list-style-type: decimal; margin-left: 1rem; margin-bottom: 0.75rem; }
+        .chat-markdown li { margin-bottom: 0.25rem; }
+        .chat-markdown strong { font-weight: 700; }
+        .chat-markdown h1, .chat-markdown h2, .chat-markdown h3 { font-weight: 700; margin-bottom: 0.5rem; }
+    </style>
     @if(!$isOpen)
         <button 
             wire:click="toggleChat"
@@ -200,8 +209,11 @@ EOT;
                     @foreach($messages as $msg)
                         <div class="flex {{ $msg['role'] === 'user' ? 'justify-end' : 'justify-start' }}">
                             <div class="max-w-[80%] rounded-lg p-3 {{ $msg['role'] === 'user' ? 'bg-black text-white' : 'bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-gray-100' }}">
-                                <p class="whitespace-pre-wrap text-sm">{{ $msg['content'] }}</p>
+                                <div class="text-sm chat-markdown">
+                                    {!! str($msg['content'])->markdown() !!}
+                                </div>
                             </div>
+
                         </div>
                     @endforeach
                     

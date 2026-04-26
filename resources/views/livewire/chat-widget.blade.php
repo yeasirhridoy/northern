@@ -48,12 +48,67 @@ new class extends Component {
     #[On('generate-response')]
     public function getResponse()
     {
-        $apiMessages = collect($this->messages)->map(function ($msg) {
-            return [
-                'role' => $msg['role'],
-                'content' => $msg['content'],
-            ];
-        })->toArray();
+        $systemPrompt = <<<EOT
+You are a professional and helpful Admission Agent for Northern University. Your goal is to assist prospective students with their inquiries using ONLY the information provided below.
+
+RULES:
+1. Be professional, polite, and welcoming.
+2. Only answer questions related to Northern University admissions, requirements, fees, and related academic info.
+3. If a question is unrelated to the university, politely inform the user that you are an admission assistant and can only help with NUB-related queries.
+4. Do NOT hallucinate. If info is missing, ask the user to contact the admission office.
+5. Provide clear, structured answers.
+
+ADMISSION INFORMATION:
+- Admission fee: Tk. 16,700 for Undergraduates & Tk. 11,200 for Postgraduates (Non-refundable).
+
+Undergraduate Requirements:
+- Minimum GPA 2.50 in both SSC & HSC.
+- O Level: 5 subjects; A Level: 2 subjects (min 'B' in 4, 'C' in 3).
+- GED: Min 410 marks in each subject, 450 average.
+- Engineering: Min GPA 2.5 in SSC & HSC (Science group + Math in HSC).
+- B. Pharm: Min GPA 3.00 in SSC & HSC (Biology, Physics & Chemistry required).
+
+Postgraduate Requirements:
+- Min CGPA 2.00 in bachelor degree and min 4 points combined in SSC/HSC.
+- Executive MBA: Min 2 years job experience post-graduation.
+- MPH: MBBS or equivalent, B.Sc in Nursing, or BSS (4 years).
+
+Required Documents:
+- All academic Transcripts, Certificates, and Testimonials (Original + Photocopy).
+- Job experience certificate (for Executive MBA).
+- 3 passport size & 3 stamp size color photos (formal dress).
+- Printed copy of applicant's NUB online admission profile.
+
+Payment & Installments:
+- Total charge = (Per Cr. Cost x Total Cr) + Semester Fee.
+- 40% payable during registration.
+- 30% before Mid-term Exam.
+- 30% before Final Exam.
+
+Financial Assistance (Waiver for Undergraduate Only):
+- GPA 5.00 in both SSC & HSC: 50% waiver.
+- GPA 4.80-4.99 in both: 30% waiver.
+- GPA 4.50-4.79 in both: 20% waiver.
+- GPA 4.00-4.49 in both: 10% waiver.
+- GPA 3.50-3.99 in both: 5% waiver.
+- Below 3.50: 0% waiver.
+
+Additional Waivers:
+- 5% scholarship for females.
+- 20% for Siblings.
+- Special waiver for Freedom Fighters' wards.
+- Authority reserves right to change fee structure.
+- Admission test may be exempted based on combined GPA.
+EOT;
+
+        $apiMessages = collect($this->messages)
+            ->prepend(['role' => 'system', 'content' => $systemPrompt])
+            ->map(function ($msg) {
+                return [
+                    'role' => $msg['role'],
+                    'content' => $msg['content'],
+                ];
+            })->toArray();
 
         $assistantId = config('openai.assistant_id');
 
@@ -126,7 +181,7 @@ new class extends Component {
             <div class="flex flex-row items-center justify-between py-3 px-4 border-b border-gray-200 dark:border-gray-700">
                 <div class="text-lg font-semibold flex items-center gap-2 text-gray-900 dark:text-gray-100">
                     <x-heroicon-o-chat-bubble-left-right class="h-5 w-5" />
-                    AI Assistant
+                    Admission Assistant
                 </div>
                 <div class="flex items-center gap-1">
                     <button wire:click="toggleExpand" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded text-gray-500">
@@ -148,7 +203,7 @@ new class extends Component {
                     @if(empty($messages))
                         <div class="flex flex-col items-center justify-center h-full text-center text-gray-400 p-4">
                             <x-heroicon-o-chat-bubble-left-right class="h-12 w-12 mb-4 opacity-20" />
-                            <p>How can I help you today?</p>
+                            <p>Welcome to Northern University! How can I help you with admissions today?</p>
                         </div>
                     @endif
 

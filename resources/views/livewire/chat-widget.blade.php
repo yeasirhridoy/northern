@@ -1,7 +1,7 @@
 <?php
 
 use Livewire\Volt\Component;
-use OpenAI\Laravel\Facades\OpenAI;
+use Illuminate\Support\Facades\Http;
 use Livewire\Attributes\On;
 
 new class extends Component {
@@ -101,51 +101,41 @@ Additional Waivers:
 - Admission test may be exempted based on combined GPA.
 EOT;
 
-        $apiMessages = collect($this->messages)
-            ->prepend(['role' => 'system', 'content' => $systemPrompt])
-            ->map(function ($msg) {
-                return [
-                    'role' => $msg['role'],
-                    'content' => $msg['content'],
-                ];
-            })->toArray();
+        $geminiMessages = collect($this->messages)->map(function ($msg) {
+            return [
+                'role' => $msg['role'] === 'assistant' ? 'model' : 'user',
+                'parts' => [
+                    ['text' => $msg['content']]
+                ],
+            ];
+        })->toArray();
 
-        $assistantId = config('openai.assistant_id');
+        $apiKey = env('GEMINI_API_KEY');
 
         try {
-            if ($assistantId) {
-                // Assistants API doesn't have a simple non-streaming "create response" in one go 
-                // like Chat completions without managing runs, but we can just use the final output.
-                $response = OpenAI::threads()->createAndRun([
-                    'assistant_id' => $assistantId,
-                    'thread' => [
-                        'messages' => $apiMessages,
-                    ],
-                ]);
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json',
+            ])->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={$apiKey}", [
+                'contents' => $geminiMessages,
+                'system_instruction' => [
+                    'parts' => [
+                        ['text' => $systemPrompt]
+                    ]
+                ],
+                'generationConfig' => [
+                    'temperature' => 0.7,
+                    'topK' => 40,
+                    'topP' => 0.95,
+                    'maxOutputTokens' => 1024,
+                ],
+            ]);
 
-                // Poll for completion (simplified)
-                $runId = $response->id;
-                $threadId = $response->threadId;
-
-                while (true) {
-                    $run = OpenAI::threads()->runs()->retrieve($threadId, $runId);
-                    if ($run->status === 'completed') {
-                        $messages = OpenAI::threads()->messages()->list($threadId);
-                        $this->currentResponse = $messages->data[0]->content[0]->text->value;
-                        break;
-                    }
-                    if (in_array($run->status, ['failed', 'cancelled', 'expired'])) {
-                        throw new \Exception("Assistant run failed with status: {$run->status}");
-                    }
-                    sleep(1);
-                }
-            } else {
-                $response = OpenAI::chat()->create([
-                    'model' => 'gpt-4o',
-                    'messages' => $apiMessages,
-                ]);
-                $this->currentResponse = $response->choices[0]->message->content;
+            if ($response->failed()) {
+                throw new \Exception("Gemini API Error: " . ($response->json('error.message') ?? 'Unknown error'));
             }
+
+            $this->currentResponse = $response->json('candidates.0.content.parts.0.text') ?? 'I apologize, but I am unable to process your request at this moment.';
+
         } catch (\Exception $e) {
             $this->messages[] = [
                 'role' => 'assistant',

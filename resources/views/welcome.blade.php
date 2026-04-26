@@ -141,6 +141,9 @@
             </div>
         </div>
     </section>
+    
+    <!-- Campus Gallery -->
+    <livewire:campus-gallery />
 
     <!-- Featured Departments -->
     <section class="py-24 bg-zinc-50 dark:bg-zinc-800/20">

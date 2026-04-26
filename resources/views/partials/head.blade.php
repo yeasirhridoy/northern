@@ -20,3 +20,5 @@
 </script>
 
 @fluxAppearance
+
+@stack('styles')
